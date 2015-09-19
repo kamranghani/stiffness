@@ -20,26 +20,26 @@ public class Joint {
     private int yNo;
     
     //following two variables are used for support conditions.
-    //Since only two directions are involved in truss, 
-    //therefore we took x & y    
-    private boolean xRestrained=false;
+    //Since only two forces (shear in y direction and moment in z direction)
+    //are involved in beam therefore we took y & z    
+    private boolean zRestrained=false;
     private boolean yRestrained=false;
     
     //forces on joint
-    private double fx;
+    private double fz;
     private double fy;
-    boolean isFxSet;
+    boolean isFzSet;
     boolean isFySet;
     
     //displacement on joint
-    private double dx;
+    private double dz;
     private double dy;
 
-    public double getFx() {
-        return fx;
+    public double getFz() {
+        return fz;
     }
-    public void setFx(double fx) {
-        this.fx = fx;
+    public void setFz(double fz) {
+        this.fz = fz;
     }
 
     public double getFy() {
@@ -50,16 +50,16 @@ public class Joint {
         this.fy = fy;
     }
 
-    public double getDx() {
-        return dx;
+    public double getDz() {
+        return dz;
     }
 
-    public boolean isIsFxSet() {
-        return isFxSet;
+    public boolean isIsFzSet() {
+        return isFzSet;
     }
 
-    public void setIsFxSet(boolean isFxSet) {
-        this.isFxSet = isFxSet;
+    public void setIsFzSet(boolean isFzSet) {
+        this.isFzSet = isFzSet;
     }
 
     public boolean isIsFySet() {
@@ -71,8 +71,8 @@ public class Joint {
     }
 
     
-    public void setDx(double dx) {
-        this.dx = dx;
+    public void setDz(double dz) {
+        this.dz = dz;
     }
 
     public double getDy() {
@@ -84,12 +84,12 @@ public class Joint {
     }
     
 
-    public boolean isxRestrained() {
-        return xRestrained;
+    public boolean iszRestrained() {
+        return zRestrained;
     }
 
-    public void setxRestrained(boolean xRestrained) {
-        this.xRestrained = xRestrained;
+    public void setzRestrained(boolean zRestrained) {
+        this.zRestrained = zRestrained;
     }
 
     public boolean isyRestrained() {

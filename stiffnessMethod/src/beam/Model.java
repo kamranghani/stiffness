@@ -53,9 +53,46 @@ public class Model {
             }
 
         }
+       
+        
+        /*
+        * The following loops assigned lower numbers to unrestrained directions
+        * of joints.
+        */
+        int jNo=1;
+        for (int i=0;i<(this.jointAl.size());i++){
+            if (!jointAl.get(i).isyRestrained()){
+                jointAl.get(i).setxNo(jNo);
+                jNo++;
+            }
+            if (!jointAl.get(i).iszRestrained()){
+                jointAl.get(i).setyNo(jNo);
+                jNo++;
+                
+            }
+            
+        }
+        /*
+        *After executing above loops the following loop assign higher nobs
+        * to the restrained joints.
+        */
+        for (int i=0;i<(this.jointAl.size());i++){
+            if (jointAl.get(i).isyRestrained()){
+                jointAl.get(i).setxNo(jNo);
+                jNo++;
+            }
+            if (jointAl.get(i).iszRestrained()){
+                jointAl.get(i).setyNo(jNo);
+                jNo++;
+                
+            }
+            
+        }
+        
+       /*
         /*
          * The following loop move the restrained joint at the end of jointAL
-         */
+         //
         int k = jointAl.size() - 1;
         for (int i = 0; i < this.jointAl.size(); i++) {
             if (jointAl.get(i).isxRestrained() || jointAl.get(i).isyRestrained()) {
@@ -82,7 +119,7 @@ public class Model {
          * The following loop moves the join in up direction if it is restrained
          * in only one direction.
          * 
-         */
+         //
         for (int i = 0; i < jointAl.size(); i++) {
             if ((i + 1) < jointAl.size()) {
                 if ((!jointAl.get(i + 1).isxRestrained() && jointAl.get(i + 1).isyRestrained())
@@ -101,7 +138,7 @@ public class Model {
         /*The following loop gives joint numbers. each join has two 
          * two number representing displacement and force in x and y 
          * direction. In other word each joint has four quantities. 
-         */
+         //
         int j = 1;
         for (int i = 0; i < jointAl.size(); i++) {
             jointAl.get(i).setxNo(j);
@@ -112,7 +149,7 @@ public class Model {
          * The following segment checks if a joint has restrained in only one
          * direction then whether the unrestrained direction is assigned a 
          * lower number.
-         */
+         //
 
         for (int i = 0; i < jointAl.size(); i++) {
             if ((jointAl.get(i).getxNo() < jointAl.get(i).getyNo())&&
@@ -126,7 +163,7 @@ public class Model {
          {
                 
             }
-        }
+        }     */
 
     }
 
@@ -137,14 +174,14 @@ public class Model {
     }
 
     /*
-     * Following two methods are written to apply loads on the truss
+     * Following two methods are written to apply loads on the Beam
      * Note that loads are applied in unrestrained directions
      * the isFxSet and isFySet parameters are set true after the loads is
      * are applied
      */
-    public void jXLoads(Joint j, double qx){
-        j.setFx(qx);
-        j.setIsFxSet(true);
+    public void jZLoads(Joint j, double qz){
+        j.setFz(qz);
+        j.setIsFzSet(true);
          
     }
     public void jYLoads(Joint j,  double qy){
