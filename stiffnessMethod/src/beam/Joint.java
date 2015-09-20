@@ -16,7 +16,7 @@ public class Joint {
     private double y;
     
     //Following two variables are used for joint Nobs    
-    private int xNo;
+    private int zNo;
     private int yNo;
     
     //following two variables are used for support conditions.
@@ -26,14 +26,34 @@ public class Joint {
     private boolean yRestrained=false;
     
     //forces on joint
-    private double fz;
-    private double fy;
-    boolean isFzSet;
-    boolean isFySet;
+    private double fz=0;
+    private double fy=0;
+    boolean isFzSet=true;   //We will set it true and when we apply support condition, will change it to false
+    boolean isFySet=true;
     
     //displacement on joint
     private double dz;
     private double dy;
+    
+    //following two variables check if the displacement is already given
+    private boolean zDisplaced; //For rotation due to moment of the beam
+    private boolean yDisplaced; 
+
+    public boolean iszDisplaced() {
+        return zDisplaced;
+    }
+
+    public void setzDisplaced(boolean zDisplaced) {
+        this.zDisplaced = zDisplaced;
+    }
+
+    public boolean isyDisplaced() {
+        return yDisplaced;
+    }
+
+    public void setyDisplaced(boolean yDisplaced) {
+        this.yDisplaced = yDisplaced;
+    }
 
     public double getFz() {
         return fz;
@@ -100,12 +120,12 @@ public class Joint {
         this.yRestrained = yRestrained;
     }
     
-    public int getxNo() {
-        return xNo;
+    public int getzNo() {
+        return zNo;
     }
 
-    public void setxNo(int xNo) {
-        this.xNo = xNo;
+    public void setzNo(int zNo) {
+        this.zNo = zNo;
     }
 
     public int getyNo() {
@@ -138,7 +158,7 @@ public class Joint {
     }
     
     public String toString(){
-        return (this.x+","+this.y+" xNo="+this.getxNo()+" yNo="+this.getyNo());
+        return (this.x+","+this.y+" xNo="+this.getzNo()+" yNo="+this.getyNo());
     }
     
 }

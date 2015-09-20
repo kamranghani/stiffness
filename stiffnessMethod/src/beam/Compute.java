@@ -14,7 +14,9 @@ public class Compute {
     private double[][] sMat;
     //for finding displacement and unknow reaction (same term as in Hibbeler 8th addition page 552
     private double[][] K11;
+    private double[][] K21;
     private double[][] K12;
+    private double[][] K22;
 
     public Compute(Model mo) {
         this.model = mo;
@@ -24,9 +26,9 @@ public class Compute {
         this.sMat = new double[size * 2][size * 2];  //multiply by 2 because of two degree of freedom     
         this.populateSMat(mo);
         //construct K11 and K22 matrix for load and displacement calculation
-        this.extractK11_K22(mo);
+        this.extractK11_K21(mo);
         //calculate member forces
-        this.calcMemberForces();
+        //this.calcMemberForces();
 
     }
 
@@ -53,38 +55,38 @@ public class Compute {
             //therefore we will enter the values in global stiffness
             // matrix using the joint numbers of the member
 
-            int nx = mo.getMemberAl().get(i).getN().getxNo(); //near end x
+            int nz = mo.getMemberAl().get(i).getN().getzNo(); //near end x
             int ny = mo.getMemberAl().get(i).getN().getyNo();
-            int fx = mo.getMemberAl().get(i).getF().getxNo();
+            int fz = mo.getMemberAl().get(i).getF().getzNo();
             int fy = mo.getMemberAl().get(i).getF().getyNo();
 
-            sMat[nx - 1][nx - 1] += msmat[0][0];
-            sMat[nx - 1][ny - 1] += msmat[0][1];
-            sMat[nx - 1][fx - 1] += msmat[0][2];
-            sMat[nx - 1][fy - 1] += msmat[0][3];
-            sMat[ny - 1][nx - 1] += msmat[1][0];
-            sMat[ny - 1][ny - 1] += msmat[1][1];
-            sMat[ny - 1][fx - 1] += msmat[1][2];
-            sMat[ny - 1][fy - 1] += msmat[1][3];
-            sMat[fx - 1][nx - 1] += msmat[2][0];
-            sMat[fx - 1][ny - 1] += msmat[2][1];
-            sMat[fx - 1][fx - 1] += msmat[2][2];
-            sMat[fx - 1][fy - 1] += msmat[2][3];
-            sMat[fy - 1][nx - 1] += msmat[3][0];
-            sMat[fy - 1][ny - 1] += msmat[3][1];
-            sMat[fy - 1][fx - 1] += msmat[3][2];
-            sMat[fy - 1][fy - 1] += msmat[3][3];
+            sMat[ny - 1][ny - 1] += msmat[0][0];
+            sMat[ny - 1][nz - 1] += msmat[0][1];
+            sMat[ny - 1][fy - 1] += msmat[0][2];
+            sMat[ny - 1][fz - 1] += msmat[0][3];
+            sMat[nz - 1][ny - 1] += msmat[1][0];
+            sMat[nz - 1][nz - 1] += msmat[1][1];
+            sMat[nz - 1][fy - 1] += msmat[1][2];
+            sMat[nz - 1][fz - 1] += msmat[1][3];
+            sMat[fy - 1][ny - 1] += msmat[2][0];
+            sMat[fy - 1][nz - 1] += msmat[2][1];
+            sMat[fy - 1][fy - 1] += msmat[2][2];
+            sMat[fy - 1][fz - 1] += msmat[2][3];
+            sMat[fz - 1][ny - 1] += msmat[3][0];
+            sMat[fz - 1][nz - 1] += msmat[3][1];
+            sMat[fz - 1][fy - 1] += msmat[3][2];
+            sMat[fz - 1][fz - 1] += msmat[3][3];
 
 
-
-            /* printMAT(msmat);
+         /*
+             printMAT(msmat);
             
              System.out.println("--------------------------------------");
              System.out.println("---------------Another member---------");
              System.out.println("--------------------------------------");
-             */
+            */ 
         }
-        printMAT(sMat);
+       printMAT(sMat);
 
         //  System.out.println("--------------------------------------");
         // System.out.println("---------------Another member---------");
@@ -169,40 +171,45 @@ public class Compute {
      *
      * @param mo
      */
-    private void extractK11_K22(Model mo) {
-        // count the no of loads which have been applied
+    private void extractK11_K21(Model mo) {
+        // count the no of unknow displacements i.e, the values for which isyRestrained() and iszRestrained()
+        //has been set.
 
-        int count = 0;
+        int countR = 0;
         for (int i = 0; i < mo.getJointAl().size(); i++) {
-            if (mo.getJointAl().get(i).isIsFzSet()) {
-                count = count + 1;
+            if (mo.getJointAl().get(i).isyRestrained()) {
+                countR = countR + 1;
             }
-            if (mo.getJointAl().get(i).isIsFySet()) {
-                count = count + 1;
+            if (mo.getJointAl().get(i).iszRestrained()) {
+                countR = countR + 1;
             }
         }
+        
+        //From countR find count i.e., the no of load applied. Note based on support condition
+        //we will take loads equal to zero if not a load is not applied
+        int count=mo.getJointAl().size()*2-countR;
         //Construct a load matrix
         double[][] load = new double[count][1];
 
 
-        //based on no of known loads create the K11 and K12 matrices
-        //If isIsFxSet then get the joint xNo for i and add values fri1
+        //based on no of known loads create the K11 and K21 matrices
+        //If isIsFzSet then get the joint zNo for i and add values and vice versa
         //till 
         this.K11 = new double[count][count];
-        this.K12 = new double[(mo.getJointAl().size() * 2) - count][ count];
-        int k=0; //counter variable for K12
+        this.K21 = new double[(mo.getJointAl().size() * 2) - count][ count];
+        int k=0; //counter variable for K21
         for (int i = 0; i < mo.getJointAl().size(); i++) {
-            int x = mo.getJointAl().get(i).getxNo() - 1;
+            int x = mo.getJointAl().get(i).getzNo() - 1;
             int y = mo.getJointAl().get(i).getyNo() - 1;
             if (mo.getJointAl().get(i).isIsFzSet()) {
 
-                load[x][0] = mo.getJointAl().get(i).getFz(); //Note: Here might be a bug, if x is not as per Hibbeler or we have more than one roller support.
+                load[x][0] = mo.getJointAl().get(i).getFz(); 
                 for (int j = 0; j < count; j++) {
                     K11[x][j] = this.sMat[x][j];
                 }
             } else {
-                for (int j = 0; j < count; j++) {
-                    K12[k][j] = this.sMat[x][j];
+                for (int j = 0; j < countR; j++) {
+                    K21[k][j] = this.sMat[x][j];
                     
                 }
                 k++;
@@ -216,7 +223,7 @@ public class Compute {
                     }
                 } else {
                     for (int j = 0; j < count; j++) {
-                        K12[k][j] = this.sMat[y][j];
+                        K21[k][j] = this.sMat[y][j];
                         
                     }
                     k++;
@@ -224,21 +231,22 @@ public class Compute {
             
         }
         //System.out.println("-------K11 Matrix-----");
-        //printMAT(K11);
+        printMAT(K11);
         Matrix k11 = new Matrix(K11);
         Matrix q = new Matrix(load);
         Matrix d = k11.inverse().times(q);
         
         System.out.println("-------Displacements are-----");
         printMAT(d.getArray());
-        printMAT(K12);
+        printMAT(K21);
         
         System.out.println("-------reactions are-----");
         
-        Matrix k12=new Matrix(K12);
-        Matrix q1=k12.times(d);
+        Matrix k21=new Matrix(K21);
+        Matrix q1=k21.times(d);
         printMAT(q1.getArray());
-    }
+    }  
+    
     
    /**
     * Method is used for calculating member forces after finding

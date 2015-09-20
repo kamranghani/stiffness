@@ -62,11 +62,11 @@ public class Model {
         int jNo=1;
         for (int i=0;i<(this.jointAl.size());i++){
             if (!jointAl.get(i).isyRestrained()){
-                jointAl.get(i).setxNo(jNo);
+                jointAl.get(i).setyNo(jNo);
                 jNo++;
             }
             if (!jointAl.get(i).iszRestrained()){
-                jointAl.get(i).setyNo(jNo);
+                jointAl.get(i).setzNo(jNo);
                 jNo++;
                 
             }
@@ -78,100 +78,21 @@ public class Model {
         */
         for (int i=0;i<(this.jointAl.size());i++){
             if (jointAl.get(i).isyRestrained()){
-                jointAl.get(i).setxNo(jNo);
+                jointAl.get(i).setyNo(jNo);
                 jNo++;
             }
             if (jointAl.get(i).iszRestrained()){
-                jointAl.get(i).setyNo(jNo);
+                jointAl.get(i).setzNo(jNo);
                 jNo++;
                 
             }
             
         }
         
-       /*
-        /*
-         * The following loop move the restrained joint at the end of jointAL
-         //
-        int k = jointAl.size() - 1;
-        for (int i = 0; i < this.jointAl.size(); i++) {
-            if (jointAl.get(i).isxRestrained() || jointAl.get(i).isyRestrained()) {
-                //For swapping elements
-                if (i == k) {
-                    break;
-                }
-                Joint temp;
-                temp = jointAl.get(i);
-                jointAl.set(i, jointAl.get(k));
-                jointAl.set(k, temp);
-
-                i = i - 1;
-                k--;
-            }
-
-        }
-        Joint temp;
-        temp = jointAl.get(jointAl.size() - 2);
-        jointAl.set(jointAl.size() - 2, jointAl.get(jointAl.size() - 1));
-        jointAl.set(jointAl.size() - 1, temp);
-
-        /*
-         * The following loop moves the join in up direction if it is restrained
-         * in only one direction.
-         * 
-         //
-        for (int i = 0; i < jointAl.size(); i++) {
-            if ((i + 1) < jointAl.size()) {
-                if ((!jointAl.get(i + 1).isxRestrained() && jointAl.get(i + 1).isyRestrained())
-                        && (jointAl.get(i).isxRestrained() && jointAl.get(i).isyRestrained())
-                        || (jointAl.get(i + 1).isxRestrained() && !jointAl.get(i + 1).isyRestrained())
-                        && (jointAl.get(i).isxRestrained() && jointAl.get(i).isyRestrained())) {
-
-                    Joint temp1;
-                    temp1 = jointAl.get(i);
-                    jointAl.set(i, jointAl.get(i+1));
-                    jointAl.set(i+1, temp1);
-                }
-            }
-        }
-
-        /*The following loop gives joint numbers. each join has two 
-         * two number representing displacement and force in x and y 
-         * direction. In other word each joint has four quantities. 
-         //
-        int j = 1;
-        for (int i = 0; i < jointAl.size(); i++) {
-            jointAl.get(i).setxNo(j);
-            jointAl.get(i).setyNo(j + 1);
-            j = j + 2;
-        }
-        /*
-         * The following segment checks if a joint has restrained in only one
-         * direction then whether the unrestrained direction is assigned a 
-         * lower number.
-         //
-
-        for (int i = 0; i < jointAl.size(); i++) {
-            if ((jointAl.get(i).getxNo() < jointAl.get(i).getyNo())&&
-                    jointAl.get(i).isxRestrained() && !jointAl.get(i).isyRestrained()){
-                int temp2=jointAl.get(i).getxNo();
-                jointAl.get(i).setxNo(jointAl.get(i).getyNo());
-                jointAl.get(i).setyNo(temp2);
-                        
-            }
-                     
-         {
-                
-            }
-        }     */
-
+     
     }
 
-    private void swap(Joint x, Joint y) {
-        Joint temp = x;
-        x = y;
-        y = temp;
-    }
+   
 
     /*
      * Following two methods are written to apply loads on the Beam
