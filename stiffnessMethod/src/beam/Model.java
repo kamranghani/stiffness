@@ -90,9 +90,7 @@ public class Model {
         }
         
      
-    }
-
-   
+    }   
 
     /*
      * Following two methods are written to apply loads on the Beam
@@ -102,11 +100,20 @@ public class Model {
      */
     public void jZLoads(Joint j, double qz){
         j.setFz(qz);
-        j.setIsFzSet(true);
-         
+        j.setIsFzSet(true);         
     }
     public void jYLoads(Joint j,  double qy){
         j.setFy(qy);
         j.setIsFySet(true);
+    }
+    
+    public void jZDisp(Joint j, double dz){
+        j.setDz(dz);
+        j.setzDisplaced(true);         
+    }
+    
+    public void jYDisp(Joint j,  double dy){
+        j.setDy(dy);
+        j.setyDisplaced(true);
     }
 }

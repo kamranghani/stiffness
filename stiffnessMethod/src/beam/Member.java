@@ -19,7 +19,7 @@ public class Member {
     //modulus of elasticity
     private double E=1;
     //cross sectional area
-    private double A=1;
+    private double I=1;
     //Length 
     private double L=1;
 
@@ -31,12 +31,12 @@ public class Member {
         this.E = E;
     }
 
-    public double getA() {
-        return A;
+    public double getI() {
+        return I;
     }
 
-    public void setA(double A) {
-        this.A = A;
+    public void setI(double I) {
+        this.I = I;
     }
 
     public double getL() {
