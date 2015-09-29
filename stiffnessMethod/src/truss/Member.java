@@ -1,5 +1,4 @@
-package beam;
-
+package truss;
 
 /*
  * To change this template, choose Tools | Templates
@@ -19,7 +18,7 @@ public class Member {
     //modulus of elasticity
     private double E=1;
     //cross sectional area
-    private double I=1;
+    private double A=1;
     //Length 
     private double L=1;
 
@@ -31,12 +30,12 @@ public class Member {
         this.E = E;
     }
 
-    public double getI() {
-        return I;
+    public double getA() {
+        return A;
     }
 
-    public void setI(double I) {
-        this.I = I;
+    public void setA(double A) {
+        this.A = A;
     }
 
     public double getL() {
@@ -55,8 +54,8 @@ public class Member {
         this.N=near;
         this.F=far;
         
-    } 
-    
+    }
+
 
     public Joint getN() {
         return N;

@@ -1,11 +1,8 @@
-
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package beam;
-
-
+package truss;
 
 /**
  *
@@ -17,35 +14,26 @@ public class Joint {
     private double y;
     
     //Following two variables are used for joint Nobs    
-    private int zNo;
+    private int xNo;
     private int yNo;
     
     //following two variables are used for support conditions.
-    //Since only two forces (shear in y direction and moment in z direction)
-    //are involved in beam therefore we took y & z    
-    private boolean zRestrained=false;
+    //Since only two directions are involved in truss, 
+    //therefore we took x & y    
+    private boolean xRestrained=false;
     private boolean yRestrained=false;
     
-    //forces on joint
-    private double fz=0;
-    private double fy=0;
-    boolean isFzSet=true;   //We will set it true and when we apply support condition, will change it to false
-    boolean isFySet=true;
     
-    //displacement on joint
-    private double dz;
-    private double dy;
     
     //following two variables check if the displacement is already given
-    private boolean zDisplaced; //For rotation due to moment of the beam
-    private boolean yDisplaced; 
+    private boolean xDisplaced; //
 
-    public boolean iszDisplaced() {
-        return zDisplaced;
+    public boolean isxDisplaced() {
+        return xDisplaced;
     }
 
-    public void setzDisplaced(boolean zDisplaced) {
-        this.zDisplaced = zDisplaced;
+    public void setxDisplaced(boolean xDisplaced) {
+        this.xDisplaced = xDisplaced;
     }
 
     public boolean isyDisplaced() {
@@ -55,12 +43,24 @@ public class Joint {
     public void setyDisplaced(boolean yDisplaced) {
         this.yDisplaced = yDisplaced;
     }
+    private boolean yDisplaced; 
+    
+    
+    //forces on joint
+    private double fx;
+    private double fy;
+    boolean isFxSet;
+    boolean isFySet;
+    
+    //displacement on joint
+    private double dx;
+    private double dy;
 
-    public double getFz() {
-        return fz;
+    public double getFx() {
+        return fx;
     }
-    public void setFz(double fz) {
-        this.fz = fz;
+    public void setFx(double fx) {
+        this.fx = fx;
     }
 
     public double getFy() {
@@ -71,16 +71,16 @@ public class Joint {
         this.fy = fy;
     }
 
-    public double getDz() {
-        return dz;
+    public double getDx() {
+        return dx;
     }
 
-    public boolean isIsFzSet() {
-        return isFzSet;
+    public boolean isIsFxSet() {
+        return isFxSet;
     }
 
-    public void setIsFzSet(boolean isFzSet) {
-        this.isFzSet = isFzSet;
+    public void setIsFxSet(boolean isFxSet) {
+        this.isFxSet = isFxSet;
     }
 
     public boolean isIsFySet() {
@@ -92,8 +92,8 @@ public class Joint {
     }
 
     
-    public void setDz(double dz) {
-        this.dz = dz;
+    public void setDx(double dx) {
+        this.dx = dx;
     }
 
     public double getDy() {
@@ -105,12 +105,12 @@ public class Joint {
     }
     
 
-    public boolean iszRestrained() {
-        return zRestrained;
+    public boolean isxRestrained() {
+        return xRestrained;
     }
 
-    public void setzRestrained(boolean zRestrained) {
-        this.zRestrained = zRestrained;
+    public void setxRestrained(boolean xRestrained) {
+        this.xRestrained = xRestrained;
     }
 
     public boolean isyRestrained() {
@@ -121,12 +121,12 @@ public class Joint {
         this.yRestrained = yRestrained;
     }
     
-    public int getzNo() {
-        return zNo;
+    public int getxNo() {
+        return xNo;
     }
 
-    public void setzNo(int zNo) {
-        this.zNo = zNo;
+    public void setxNo(int xNo) {
+        this.xNo = xNo;
     }
 
     public int getyNo() {
@@ -159,7 +159,7 @@ public class Joint {
     }
     
     public String toString(){
-        return (this.x+","+this.y+" xNo="+this.getzNo()+" yNo="+this.getyNo());
+        return (this.x+","+this.y+" xNo="+this.getxNo()+" yNo="+this.getyNo());
     }
     
 }
